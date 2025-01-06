@@ -1,6 +1,6 @@
 const streamers = []; // Liste des streamers à suivre
-const clientId = '06uq2i3sml8j4y4cmlor85eqdbytj6';  // Remplace par ton client ID Twitch
-const accessToken = 'hfflsli9s96lcr0qii9qnyh2mb6ucf';  // Remplace par ton access token Twitch (en mode "client credentials")
+const clientId = '06uq2i3sml8j4y4cmlor85eqdbytj6';  // Ton Client ID
+const accessToken = 'hfflsli9s96lcr0qii9qnyh2mb6ucf';  // Ton Access Token
 
 // Fonction pour vérifier si un streamer est en ligne ou hors ligne
 function checkStreamerStatus(username) {
