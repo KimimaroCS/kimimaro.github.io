@@ -1,6 +1,6 @@
 const streamers = []; // Liste des streamers à suivre
 const clientId = '06uq2i3sml8j4y4cmlor85eqdbytj6';  // Ton Client ID
-const accessToken = 'hfflsli9s96lcr0qii9qnyh2mb6ucf';  // Ton Access Token
+const accessToken = 'z7w6v8ufynb3v12xoou2o9uy33al08';  // Ton Access Token
 
 // Fonction pour vérifier si un streamer est en ligne ou hors ligne
 function checkStreamerStatus(username) {
