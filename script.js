@@ -55,3 +55,26 @@ function addStreamer() {
 streamers.forEach(username => {
     checkStreamerStatus(username);
 });
+
+function checkStreamerStatus(username) {
+    console.log("Vérification du streamer :", username);
+    console.log("Client ID :", clientId);
+    console.log("Access Token :", accessToken);
+
+    return fetch(`https://api.twitch.tv/helix/streams?user_login=${username}`, {
+        headers: {
+            'Client-ID': clientId,
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    })
+    .then(response => {
+        console.log("Statut de la réponse :", response.status); // Log du statut HTTP
+        return response.json();
+    })
+    .then(data => {
+        console.log("Réponse API :", data); // Log des données reçues
+        const isOnline = data.data.length > 0;
+        displayStreamer(username, isOnline);
+    })
+    .catch(err => console.error('Erreur de récupération des données :', err));
+}
