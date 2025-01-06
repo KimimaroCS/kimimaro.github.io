@@ -1,7 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon site de streamers Twitch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <h1>Mon site de streamers Twitch</h1>
+    <div>
+        <label for="username">Ajouter un streamer :</label>
+        <input type="text" id="username" placeholder="Nom du streamer">
+        <button onclick="addStreamer()">Ajouter</button>
+    </div>
+    <div id="streamers-list"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+#streamers-list {
+    margin-top: 20px;
+}
+
+.streamer {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.led {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
