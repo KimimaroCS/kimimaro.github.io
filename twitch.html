@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitch Player et Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6441A5, #6A47B3);
+      color: #fff;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      border-bottom: 4px solid #6441A5;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #fff;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .twitch-player {
+      width: 100%;
+      height: 480px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .chat-box {
+      width: 50%;
+      height: 500px;
+      border: none;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Suivez la Diffusion Twitch</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Live Twitch - Mon Stream</h2>
+
+    <!-- Player Twitch -->
+    <div>
+      <iframe id="twitch-player" class="twitch-player" 
+        src="https://player.twitch.tv/?channel=NomDeLaChaineTwitch&parent=https://kimimarocs.github.io/" 
+        frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+    </div>
+
+    <!-- Chat et statut -->
+    <div class="status" id="stream-status">
+      <!-- Le statut du stream sera mis ici -->
+    </div>
+
+    <div class="chat-container">
+      <!-- Intégration du chat en direct -->
+      <iframe class="chat-box" 
+        src="https://www.twitch.tv/embed/NomDeLaChaineTwitch/chat?parent=https://kimimarocs.github.io/" 
+        frameborder="0" scrolling="no"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const clientId = 'gp762nuuoqcoxypju8c569th9wz7q5';  // Votre client ID
+    const accessToken = 'mw13tv6u94urmytvycd8256cdfr5wp';  // Votre access token
+    const channel = 'kimimarofps';  // Remplacez par le nom de votre chaîne
+
+    // Fonction pour vérifier si le stream est en direct
+    function checkStreamStatus() {
+      fetch(`https://api.twitch.tv/helix/streams?user_login=${channel}`, {
+        method: 'GET',
+        headers: {
+          'Client-ID': clientId,
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.data && data.data.length > 0) {
+          document.getElementById('stream-status').innerHTML = `<span style="color: green;">Le stream est en direct !</span>`;
+        } else {
+          document.getElementById('stream-status').innerHTML = `<span style="color: red;">Le stream est hors ligne.</span>`;
+        }
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération du statut du stream:', error);
+      });
+    }
+
+    // Vérification du statut du stream au chargement de la page
+    document.addEventListener('DOMContentLoaded', () => {
+      checkStreamStatus();
+    });
+  </script>
+
+</body>
+</html>

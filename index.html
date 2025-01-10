@@ -1,20 +1,295 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon site de streamers Twitch</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Storage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .input-container input, .input-container select {
+      flex: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .input-container button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .input-container button:hover {
+      background-color: #45a049;
+    }
+
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .video-card:hover {
+      transform: scale(1.05);
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .reset-button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .reset-button:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Button for Spotify */
+    .spotify-button {
+      background-color: #1DB954;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .spotify-button:hover {
+      background-color: #1ed760;
+    }
+    
+    /* Button for Twitch */
+    .twitch-button {
+      background-color: #6441A5;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .spotify-button:hover {
+      background-color: #1ed760;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>Mon site de streamers Twitch</h1>
-    <div>
-        <label for="username">Ajouter un streamer :</label>
-        <input type="text" id="username" placeholder="Nom du streamer">
-        <button onclick="addStreamer()">Ajouter</button>
-    </div>
-    <div id="streamers-list"></div>
+  <header>
+    <h1>Youtube Video Storage</h1>
+    <nav>
+      <a href="#">Tendances</a>
+      <a href="#">Musique</a>
+      <a href="#">Films et séries TV</a>
+      <a href="#">Direct</a>
+      <a href="#">Jeux vidéo</a>
+      <a href="#">Actualités</a>
+      <a href="#">Sport</a>
+      <a href="#">Savoirs & Cultures</a>
+      <a href="#">Mode et beauté</a>
+      <a href="#">Podcasts</a>
+    </nav>
+  </header>
 
-    <script src="script.js"></script>
+  <div class="container">
+    <button class="reset-button" onclick="resetLocalStorage()">Réinitialiser les vidéos enregistrées</button>
+
+    <div class="input-container">
+      <input type="text" id="videoUrl" placeholder="Enter YouTube Video URL">
+      <select id="videoCategory">
+        <option value="Tendances">Tendances</option>
+        <option value="Musique">Musique</option>
+        <option value="Films et séries TV">Films et séries TV</option>
+        <option value="Direct">Direct</option>
+        <option value="Jeux vidéo">Jeux vidéo</option>
+        <option value="Actualités">Actualités</option>
+        <option value="Sport">Sport</option>
+        <option value="Savoirs & Cultures">Savoirs & Cultures</option>
+        <option value="Mode et beauté">Mode et beauté</option>
+        <option value="Podcasts">Podcasts</option>
+      </select>
+      <button onclick="addVideo()">Add Video</button>
+    </div>
+
+    <h2>Saved Videos:</h2>
+    <div class="videos" id="videoList">
+      <!-- Videos will appear here -->
+    </div>
+
+    <!-- Spotify Button -->
+    <a href="spotify.html" class="spotify-button">Go to Spotify Playlist</a>
+        <!-- Twitch Button -->
+        <a href="twitch.html" class="twitch-button">Go to Twitch</a>
+
+  </div>
+
+  <script>
+    // Function to render videos from localStorage
+    function renderVideos(category = null) {
+      const videoList = document.getElementById('videoList');
+      videoList.innerHTML = '';
+
+      const savedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+      
+      // Filter videos by category if a category is selected
+      const filteredVideos = category
+        ? savedVideos.filter(video => video.category === category)
+        : savedVideos;
+
+      filteredVideos.forEach(video => {
+        const videoCard = document.createElement('div');
+        videoCard.className = 'video-card';
+        videoCard.innerHTML = `
+          <iframe src="https://www.youtube.com/embed/${video.id}" allowfullscreen></iframe>
+          <p>${video.category}</p>
+        `;
+        videoList.appendChild(videoCard);
+      });
+    }
+
+    // Add event listeners for each navigation link
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const category = event.target.textContent; // Get the category from the link text
+        renderVideos(category); // Render videos of the selected category
+      });
+    });
+
+    // Function to add video to the page and save it in localStorage
+    function addVideo() {
+      const videoUrlInput = document.getElementById('videoUrl');
+      const videoCategorySelect = document.getElementById('videoCategory');
+      const videoUrl = videoUrlInput.value;
+      const videoCategory = videoCategorySelect.value;
+
+      if (!videoUrl) {
+        alert('Please enter a valid YouTube URL.');
+        return;
+      }
+
+      const videoId = getYouTubeVideoId(videoUrl);
+      if (!videoId) {
+        alert('Invalid YouTube URL. Please try again.');
+        return;
+      }
+
+      const savedVideos = JSON.parse(localStorage.getItem('videos')) || [];
+      const videoData = { id: videoId, category: videoCategory };
+
+      if (!savedVideos.some(video => video.id === videoId)) {
+        savedVideos.push(videoData);
+        localStorage.setItem('videos', JSON.stringify(savedVideos));
+      }
+
+      videoUrlInput.value = '';
+      renderVideos(); // Render videos after adding a new one
+    }
+
+    // Function to extract video ID from YouTube URL
+    function getYouTubeVideoId(url) {
+      const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+
+    // Function to reset localStorage
+    function resetLocalStorage() {
+      if (confirm("Êtes-vous sûr de vouloir supprimer toutes les vidéos enregistrées ?")) {
+        localStorage.removeItem('videos');
+        renderVideos(); // Update the display
+        alert("Toutes les vidéos enregistrées ont été supprimées !");
+      }
+    }
+
+    // Render all videos on page load
+    document.addEventListener('DOMContentLoaded', () => renderVideos());
+  </script>
 </body>
 </html>
